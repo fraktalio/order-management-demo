@@ -1,0 +1,71 @@
+import { DeciderEventSourcedSpec } from "@fraktalio/fmodel-decider";
+import { changeRestaurantManuDecider } from "./changeRestaurantMenuDecider.ts";
+import {
+  type ChangeRestaurantMenuCommand,
+  menuItemId,
+  restaurantId,
+  type RestaurantMenu,
+  restaurantMenuId,
+  RestaurantNotFoundError,
+} from "./api.ts";
+
+// Test data
+const testMenu: RestaurantMenu = {
+  menuId: restaurantMenuId("menu-1"),
+  cuisine: "ITALIAN",
+  menuItems: [
+    { menuItemId: menuItemId("item-1"), name: "Pizza", price: "10.00" },
+    { menuItemId: menuItemId("item-2"), name: "Pasta", price: "12.00" },
+  ],
+};
+
+Deno.test("Change Restaurant Menu - Success", () => {
+  const newMenu: RestaurantMenu = {
+    menuId: restaurantMenuId("menu-2"),
+    cuisine: "MEXICAN",
+    menuItems: [
+      { menuItemId: menuItemId("item-3"), name: "Tacos", price: "8.00" },
+    ],
+  };
+
+  const command: ChangeRestaurantMenuCommand = {
+    kind: "ChangeRestaurantMenuCommand",
+    restaurantId: restaurantId("restaurant-1"),
+    menu: newMenu,
+  };
+
+  DeciderEventSourcedSpec.for(changeRestaurantManuDecider)
+    .given([
+      {
+        kind: "RestaurantCreatedEvent",
+        restaurantId: restaurantId("restaurant-1"),
+        name: "Italian Bistro",
+        menu: testMenu,
+        final: false,
+        tagFields: ["restaurantId"],
+      },
+    ])
+    .when(command)
+    .then([
+      {
+        kind: "RestaurantMenuChangedEvent",
+        restaurantId: restaurantId("restaurant-1"),
+        menu: newMenu,
+        final: false,
+        tagFields: ["restaurantId"],
+      },
+    ]);
+});
+
+Deno.test("Change Restaurant Menu - Restaurant Does Not Exist (throws error)", () => {
+  const command: ChangeRestaurantMenuCommand = {
+    kind: "ChangeRestaurantMenuCommand",
+    restaurantId: restaurantId("restaurant-1"),
+    menu: testMenu,
+  };
+
+  DeciderEventSourcedSpec.for(changeRestaurantManuDecider)
+    .given([])
+    .when(command)
+    .thenThrows((error) => error instanceof RestaurantNotFoundError);
+});
