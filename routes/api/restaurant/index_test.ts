@@ -127,12 +127,14 @@ Deno.test("API handler scaffolding - POST create returns 201 for valid payload",
   });
 });
 
-Deno.test("API handler scaffolding - GET view returns 400 when id is missing", async () => {
+Deno.test("API handler scaffolding - GET without id lists all restaurants", async () => {
   await withMemoryKv(async () => {
     const res = await handleGet(
       new Request("http://localhost/api/restaurant"),
     );
-    assertEquals(res.status, 400);
+    assertEquals(res.status, 200);
+    const body = await res.json();
+    assertEquals(Array.isArray(body), true);
   });
 });
 
