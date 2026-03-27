@@ -1,4 +1,4 @@
-# Restaurant Order Management — Deno Fresh Demo
+# Restaurant Order Management — Deno (TypeScript) Demo
 
 A restaurant and order management demo built with
 [Deno Fresh v2](https://fresh.deno.dev), showcasing the **Dynamic Consistency
@@ -247,7 +247,3 @@ deno test --allow-all --unstable-kv
 # Run a specific test file
 deno test --allow-all --unstable-kv lib/placeOrderDecider_test.ts
 ```
-
-## License
-
-MIT
