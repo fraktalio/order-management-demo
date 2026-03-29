@@ -3,9 +3,10 @@
 A restaurant and order management demo built with
 [Deno Fresh v2](https://fresh.deno.dev), showcasing the **Dynamic Consistency
 Boundary (DCB)** pattern from
-[`fmodel-decider`](https://jsr.io/@fraktalio/fmodel-decider) with
-[Deno KV](https://docs.deno.com/deploy/kv/manual/) as a robust event store
-implementation that natively supports DCB.
+[`fmodel-decider`](https://jsr.io/@fraktalio/fmodel-decider).
+[Deno KV](https://docs.deno.com/deploy/kv/manual/) serves as the event store,
+with its native secondary-index and versionstamp support making it a natural fit
+for DCB's sliced, tuple-based event queries.
 
 ## Event Modeling
 
@@ -73,16 +74,40 @@ repository automatically generates all tag subset combinations (2^n - 1 indexes
 per event), enabling flexible querying by any combination of tag fields. Last
 event pointers enable optimistic locking via Deno KV versionstamp checks.
 
-Each decider has its own repository with tuple-based queries that load only the
-events it needs (sliced/vertical approach):
+### Sliced / Vertical Repositories
+
+Each decider has its own repository that declares exactly which event types it
+needs, queried by the relevant entity IDs. This is the **sliced** (or vertical)
+approach — instead of loading all events for an aggregate, each use case loads
+only the minimal slice required for its decision:
+
+```
+createRestaurant       → [(restaurantId, "RestaurantCreatedEvent")]
+changeRestaurantMenu   → [(restaurantId, "RestaurantCreatedEvent")]
+placeOrder             → [(restaurantId, "RestaurantCreatedEvent"),
+                          (restaurantId, "RestaurantMenuChangedEvent"),
+                          (orderId,      "RestaurantOrderPlacedEvent")]
+markOrderAsPrepared    → [(orderId,      "RestaurantOrderPlacedEvent"),
+                          (orderId,      "OrderPreparedEvent")]
+```
+
+Notice how `placeOrder` spans two entity IDs (`restaurantId` and `orderId`) to
+validate menu items against the restaurant while checking order uniqueness — a
+cross-entity consistency boundary that would require coordination in the
+aggregate pattern but is just a wider tuple query here.
+
+Each tuple `(entityId, eventType)` maps to a Deno KV secondary index, so the
+repository fetches only the matching events with no full-stream scanning. The
+result: every use case pays only for the events it actually reads, and adding a
+new use case never widens the query of an existing one.
 
 ```ts
+// Wire a decider to its sliced repository and handle a command
 const repository = createRestaurantRepository(kv);
-const cmdHandler = new EventSourcedCommandHandler(
+const events = await repository.handle(
+  createRestaurantCommand,
   createRestaurantDecider,
-  repository,
 );
-const events = await cmdHandler.handle(createRestaurantCommand);
 ```
 
 ## Specification by Example (Given/When/Then)
