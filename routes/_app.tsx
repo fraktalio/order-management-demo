@@ -9,12 +9,7 @@ export default define.page(function App({ Component, url }) {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>order-management-demo</title>
-        <script
-          dangerouslySetInnerHTML={{
-            __html:
-              `(function(){try{var d=document.documentElement.classList;var t=localStorage.theme;if(t==="dark"||(t==null&&matchMedia("(prefers-color-scheme:dark)").matches)){d.add("dark")}else{d.remove("dark")}}catch(e){}})()`,
-          }}
-        />
+        <script src="/theme.js"></script>
       </head>
       <body className="bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
         <div class="flex flex-col min-h-screen">
