@@ -10,5 +10,5 @@
     } else {
       d.remove("dark");
     }
-  } catch (e) {}
+  } catch (_) { /* localStorage may be unavailable */ }
 })();
