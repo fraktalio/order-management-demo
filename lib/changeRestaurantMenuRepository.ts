@@ -5,7 +5,7 @@
  * to Deno KV storage with optimistic locking.
  */
 
-import { DenoKvEventSourcedRepository } from "@fraktalio/fmodel-decider";
+import { DenoKvEventRepository } from "@fraktalio/fmodel-decider";
 import type {
   ChangeRestaurantMenuCommand,
   RestaurantCreatedEvent,
@@ -29,7 +29,7 @@ import type {
  * ```
  */
 export const changeRestaurantMenuRepository = (kv: Deno.Kv) =>
-  new DenoKvEventSourcedRepository<
+  new DenoKvEventRepository<
     ChangeRestaurantMenuCommand,
     RestaurantCreatedEvent,
     RestaurantMenuChangedEvent

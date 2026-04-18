@@ -11,7 +11,7 @@
   "exclude": ["**/_fresh/*"],
   "imports": {
     "@/": "./",
-    "@fraktalio/fmodel-decider": "jsr:@fraktalio/fmodel-decider@^0.6.0",
+    "@fraktalio/fmodel-decider": "jsr:@fraktalio/fmodel-decider@^0.9.0",
     "@std/assert": "jsr:@std/assert@^1.0.19",
     "@std/ulid": "jsr:@std/ulid@^1.0.0",
     "fresh": "jsr:@fresh/core@^2.2.1",

@@ -48,7 +48,7 @@ slice.
    (`DeciderEventSourcedSpec` or `ViewSpecification`). Write requirements first,
    then generate tests, then implement.
 2. **Type system as formal specification**: the `DcbDecider`, `Projection`, and
-   `DenoKvEventSourcedRepository` interfaces from fmodel-decider are executable
+   `DenoKvEventRepository` interfaces from fmodel-decider are executable
    specifications that constrain implementations. The type system encodes domain
    rules — impossible states become compile errors, not runtime bugs.
 3. **One decider per slice**: each decider handles exactly one command type and
@@ -73,7 +73,7 @@ Commands ──► Decider (decide + evolve) ──► Events
 Events ──► View/Projection (evolve) ──► Read Model State
                                               │
                                               ▼
-Events ──► DenoKvEventSourcedRepository ──► Deno KV (event store)
+Events ──► DenoKvEventRepository ──► Deno KV (event store)
 ```
 
 ## When to Use This Skill

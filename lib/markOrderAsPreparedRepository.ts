@@ -8,7 +8,7 @@
  * and whether it has already been prepared.
  */
 
-import { DenoKvEventSourcedRepository } from "@fraktalio/fmodel-decider";
+import { DenoKvEventRepository } from "@fraktalio/fmodel-decider";
 import type {
   MarkOrderAsPreparedCommand,
   OrderPreparedEvent,
@@ -37,7 +37,7 @@ import type {
  * ```
  */
 export const markOrderAsPreparedRepository = (kv: Deno.Kv) =>
-  new DenoKvEventSourcedRepository<
+  new DenoKvEventRepository<
     MarkOrderAsPreparedCommand,
     RestaurantOrderPlacedEvent | OrderPreparedEvent,
     OrderPreparedEvent

@@ -159,7 +159,7 @@ export const {useCase}Decider: DcbDecider<
 The repository wires the decider to Deno KV storage via tuple-based queries.
 
 ```ts
-import { DenoKvEventSourcedRepository } from "@fraktalio/fmodel-decider";
+import { DenoKvEventRepository } from "@fraktalio/fmodel-decider";
 import type {
   {UseCase}Command,
   SomeInputEvent,
@@ -167,7 +167,7 @@ import type {
 } from "./api.ts";
 
 export const {useCase}Repository = (kv: Deno.Kv) =>
-  new DenoKvEventSourcedRepository<
+  new DenoKvEventRepository<
     {UseCase}Command,    // Command
     SomeInputEvent,      // Input events (loaded from KV)
     {UseCase}Event       // Output events (persisted to KV)
@@ -196,7 +196,7 @@ multiple entity types in one operation.
 Use the Given-When-Then DSL for specification by example:
 
 ```ts
-import { DeciderEventSourcedSpec } from "@fraktalio/fmodel-decider";
+import { DeciderEventSourcedSpec } from "./test_specs.ts";
 import { {useCase}Decider } from "./{useCase}Decider.ts";
 import { type {UseCase}Command, myEntityId, MyDomainError } from "./api.ts";
 

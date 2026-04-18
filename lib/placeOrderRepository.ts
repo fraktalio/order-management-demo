@@ -8,7 +8,7 @@
  * events related to both the restaurant state and existing orders.
  */
 
-import { DenoKvEventSourcedRepository } from "@fraktalio/fmodel-decider";
+import { DenoKvEventRepository } from "@fraktalio/fmodel-decider";
 import type {
   PlaceOrderCommand,
   RestaurantCreatedEvent,
@@ -42,7 +42,7 @@ import type {
  * ```
  */
 export const placeOrderRepository = (kv: Deno.Kv) =>
-  new DenoKvEventSourcedRepository<
+  new DenoKvEventRepository<
     PlaceOrderCommand,
     | RestaurantCreatedEvent
     | RestaurantMenuChangedEvent

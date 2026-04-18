@@ -1,4 +1,4 @@
-import { ViewSpecification } from "@fraktalio/fmodel-decider";
+import { ViewSpecification } from "./test_specs.ts";
 import { orderView } from "./orderView.ts";
 import { type MenuItem, menuItemId, orderId, restaurantId } from "./api.ts";
 

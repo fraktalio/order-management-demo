@@ -1,4 +1,4 @@
-import { DeciderEventSourcedSpec } from "@fraktalio/fmodel-decider";
+import { DeciderEventSourcedSpec } from "./test_specs.ts";
 import { createRestaurantDecider } from "./createRestaurantDecider.ts";
 import {
   type CreateRestaurantCommand,

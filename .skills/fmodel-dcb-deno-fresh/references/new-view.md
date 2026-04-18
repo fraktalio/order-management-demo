@@ -86,7 +86,7 @@ const state = await queryHandler.handle([
 ### Unit Test — `lib/{domain}View_test.ts`
 
 ```ts
-import { ViewSpecification } from "@fraktalio/fmodel-decider";
+import { ViewSpecification } from "./test_specs.ts";
 import { {domain}View } from "./{domain}View.ts";
 
 Deno.test("{Domain} View - SomeEvent creates state", () => {

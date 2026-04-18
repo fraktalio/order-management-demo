@@ -9,7 +9,7 @@ that serve as living documentation.
 ### Decider Tests — `DeciderEventSourcedSpec`
 
 ```ts
-import { DeciderEventSourcedSpec } from "@fraktalio/fmodel-decider";
+import { DeciderEventSourcedSpec } from "./test_specs.ts";
 
 // Success case: given preconditions, when command, then expected events
 Deno.test("Place Order - Success", () => {
@@ -40,7 +40,7 @@ Each decider test file should cover:
 ### View Tests — `ViewSpecification`
 
 ```ts
-import { ViewSpecification } from "@fraktalio/fmodel-decider";
+import { ViewSpecification } from "./test_specs.ts";
 
 Deno.test("Restaurant View - Created", () => {
   ViewSpecification.for(restaurantView)
@@ -97,7 +97,7 @@ For invariants that should hold across all valid inputs, use `fast-check`:
 
 ```ts
 import fc from "fast-check";
-import { DeciderEventSourcedSpec } from "@fraktalio/fmodel-decider";
+import { DeciderEventSourcedSpec } from "./test_specs.ts";
 
 Deno.test("Property: creating a restaurant always produces exactly one event", () => {
   fc.assert(
